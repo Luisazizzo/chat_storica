@@ -10,12 +10,8 @@
 services:
 
   # ---------------- Vector store: indicizzazione testi dei personaggi ----------------
-  # Equivalente al comando docker run visto a lezione (S09/S11):
-  #   docker run -d --name qdrant-chat-storica -p 6336:6333 \
-  #     -v "$(pwd)/qdrant_storage:/qdrant/storage" qdrant/qdrant
-  #
-  # Come nelle lezioni, Qdrant gira come servizio persistente: l'indice sopravvive
-  # al riavvio, quindi si indicizza UNA volta e poi si riusa.
+  # Qdrant gira come servizio persistente: l'indice sopravvive al riavvio,
+  # quindi si indicizza UNA volta e poi si riusa.
   qdrant:
     image: qdrant/qdrant:v1.19.1
     container_name: qdrant-chat-storica

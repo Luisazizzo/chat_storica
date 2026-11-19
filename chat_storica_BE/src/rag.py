@@ -1,9 +1,9 @@
 """RAG per personaggio: indicizza i testi in Qdrant e li cerca filtrando sul personaggio.
 
-Usa gli stessi mattoni visti a lezione (Lab 09): OpenAIEmbedder, QdrantVectorstore,
-IngestionPipeline (DoclingParser + RecursiveSplitter + ChunkEmbedder).
+Usa OpenAIEmbedder, QdrantVectorstore, IngestionPipeline (DoclingParser + RecursiveSplitter + ChunkEmbedder).
 Ogni chunk porta nei metadati 'source_file' e 'personaggio'.
 """
+
 import os
 
 from datapizza.clients.openai import OpenAIClient
@@ -26,9 +26,13 @@ class RagStorico:
     def __init__(self, reindex: bool = False):
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
-            raise RuntimeError("OPENAI_API_KEY mancante: copia .env.example in .env e inserisci la chiave.")
+            raise RuntimeError(
+                "OPENAI_API_KEY mancante: copia .env.example in .env e inserisci la chiave."
+            )
 
-        self.embedder = OpenAIEmbedder(api_key=api_key, model_name="text-embedding-3-small")
+        self.embedder = OpenAIEmbedder(
+            api_key=api_key, model_name="text-embedding-3-small"
+        )
         self.llm = OpenAIClient(api_key=api_key, model="gpt-4o-mini")
 
         host = os.getenv("QDRANT_HOST", "localhost")
@@ -60,16 +64,22 @@ class RagStorico:
         )
         pipeline = IngestionPipeline(
             modules=[
-                DoclingParser(),
-                RecursiveSplitter(max_char=1024, overlap=128),
-                ChunkEmbedder(client=self.embedder, embedding_name=EMB_NAME),
+                DoclingParser(),  # 1. PARSE: PDF/MD → testo
+                RecursiveSplitter(
+                    max_char=1024, overlap=128
+                ),  # 2. CHUNK: dividi in pezzi da 1024 char con 128 di overlap
+                ChunkEmbedder(
+                    client=self.embedder, embedding_name=EMB_NAME
+                ),  # 3. EMBEDDING: ogni chunk → vettore a 1536 dim (text-embedding-3-small)
             ],
-            vector_store=self.vs,
+            vector_store=self.vs,  # 4. STORE: inserisce chunk + vettore in Qdrant
             collection_name=COLLECTION,
         )
         corpus = DATA_DIR / "corpus"
         for cartella in sorted(p for p in corpus.iterdir() if p.is_dir()):
-            file_testo = sorted(list(cartella.glob("*.md")) + list(cartella.glob("*.pdf")))
+            file_testo = sorted(
+                list(cartella.glob("*.md")) + list(cartella.glob("*.pdf"))
+            )
             for f in file_testo:
                 print(f"  indicizzo {cartella.name}/{f.name}")
                 pipeline.run(
@@ -80,5 +90,7 @@ class RagStorico:
     def cerca(self, personaggio_id: str, domanda: str, k: int = 3):
         """Chunk più vicini alla domanda, SOLO dai testi di quel personaggio."""
         qv = self.embedder.embed(domanda)
-        pool = self.vs.search(collection_name=COLLECTION, query_vector=qv, k=POOL, vector_name=EMB_NAME)
+        pool = self.vs.search(
+            collection_name=COLLECTION, query_vector=qv, k=POOL, vector_name=EMB_NAME
+        )
         return [h for h in pool if h.metadata.get("personaggio") == personaggio_id][:k]
