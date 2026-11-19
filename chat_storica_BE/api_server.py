@@ -15,8 +15,9 @@ from typing import Dict, List, Optional
 from datetime import datetime
 import uuid
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -288,9 +289,12 @@ async def get_stats():
 # ================================================================
 
 @app.exception_handler(HTTPException)
-async def http_exception_handler(request, exc):
+async def http_exception_handler(request: Request, exc: HTTPException):
     """Handler per HTTPException."""
-    return ErrorResponse(error=exc.detail, detail=str(exc.status_code))
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"error": exc.detail, "detail": str(exc.status_code)},
+    )
 
 
 if __name__ == "__main__":
