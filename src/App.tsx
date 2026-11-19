@@ -16,7 +16,6 @@ import danteLogo from "./assets/dante_alighieri.jpg";
 import napoleoneLogo from "./assets/napoleone_buonaparte.jpg";
 import "./App.css";
 
-/** Immagini dei personaggi da precaricare */
 const personaggioImages = [
   cesareLogo,
   leonardoLogo,
@@ -25,7 +24,6 @@ const personaggioImages = [
   napoleoneLogo,
 ];
 
-/** Converte lo storico del backend (role/content) nel formato frontend (ruolo/testo) */
 const backendToMessaggi = (
   history: Array<{ role: string; content: string }>,
 ): Messaggio[] =>
@@ -48,26 +46,22 @@ function App(): React.JSX.Element {
   const [showError, setShowError] = useState<boolean>(false);
   const [showOverlay, setShowOverlay] = useState<boolean>(true);
 
-  // I messaggi correnti = quelli del personaggio selezionato
   const messages = selectedPersonaggio
     ? (messagesByPersonaggio[selectedPersonaggio.id] ?? [])
     : [];
 
-  // Rimuovi il loader inline dell'HTML appena React monta
   useEffect(() => {
     const initialLoader = document.getElementById("initial-loader");
     if (initialLoader) {
       initialLoader.remove();
     }
 
-    // Precarica le immagini dei personaggi mentre il backend si avvia
     personaggioImages.forEach((src) => {
       const img = new Image();
       img.src = src;
     });
   }, []);
 
-  // Attendi che il backend sia pronto, poi carica i personaggi
   useEffect(() => {
     let cancelled = false;
 
@@ -103,7 +97,6 @@ function App(): React.JSX.Element {
     };
   }, []);
 
-  // Fade-out graduale dell'overlay quando il backend è pronto
   useEffect(() => {
     if (backendReady) {
       const timer = setTimeout(() => setShowOverlay(false), 400);
@@ -116,10 +109,8 @@ function App(): React.JSX.Element {
     async (personaggio: Personaggio): Promise<void> => {
       setSelectedPersonaggio(personaggio);
 
-      // Se abbiamo già i messaggi in cache, non fare nulla
       if (messagesByPersonaggio[personaggio.id]) return;
 
-      // Prima volta: prova a caricare lo storico dal backend
       try {
         const history = await getHistory(sessionId, personaggio.id);
         if (history.length > 0) {
@@ -165,7 +156,6 @@ function App(): React.JSX.Element {
       timestamp: new Date().toISOString(),
     };
 
-    // Aggiungi messaggio utente
     setMessagesByPersonaggio((prev) => ({
       ...prev,
       [personaggioId]: [...(prev[personaggioId] ?? []), userMessage],

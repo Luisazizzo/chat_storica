@@ -3,18 +3,13 @@ import type { ChatResponse, Personaggio } from "../types";
 
 const API_BASE_URL = "http://localhost:8000/api";
 
-/** Corpo della richiesta POST /chat */
 interface ChatRequestBody {
   session_id: string;
   personaggio_id: string;
   messaggio: string;
 }
 
-/**
- * Verifica se il backend ha finito l'inizializzazione.
- * GET /api/health — ritorna 200 quando pronto, 503 se ancora in avvio.
- * @returns true se il backend è pronto, false altrimenti
- */
+/** GET /api/health — ritorna 200 quando pronto, 503 se ancora in avvio */
 export const checkBackendHealth = async (): Promise<boolean> => {
   try {
     const response: AxiosResponse<{ status: string; ready: boolean }> =
@@ -25,13 +20,7 @@ export const checkBackendHealth = async (): Promise<boolean> => {
   }
 };
 
-/**
- * Attende che il backend sia pronto, polledando l'health endpoint.
- * @param maxAttempts - Numero massimo di tentativi
- * @param intervalMs - Intervallo tra tentativi in millisecondi
- * @param onRetry - Callback opzionale chiamato ad ogni tentativo fallito
- * @returns true se il backend è pronto, false se i tentativi sono esauriti
- */
+/** Polla l'health endpoint fino a quando il backend è pronto (o esauriti i tentativi) */
 export const waitForBackend = async (
   maxAttempts: number = 60,
   intervalMs: number = 2000,
@@ -48,11 +37,7 @@ export const waitForBackend = async (
   return false;
 };
 
-/**
- * Ottieni la lista dei personaggi storici dal backend.
- * GET /api/personaggi
- * @returns Array di personaggi
- */
+/** GET /api/personaggi */
 export const getPersonaggi = async (): Promise<Personaggio[]> => {
   try {
     const response: AxiosResponse<Personaggio[]> = await axios.get(
@@ -65,14 +50,7 @@ export const getPersonaggi = async (): Promise<Personaggio[]> => {
   }
 };
 
-/**
- * Invia un messaggio al backend e ottieni la risposta del personaggio.
- * POST /api/chat
- * @param sessionId - ID della sessione di conversazione
- * @param personaggioId - ID del personaggio selezionato
- * @param messaggio - Testo del messaggio dell'utente
- * @returns Risposta del backend con la risposta del personaggio
- */
+/** POST /api/chat */
 export const sendMessage = async (
   sessionId: string,
   personaggioId: string,
@@ -95,7 +73,6 @@ export const sendMessage = async (
   }
 };
 
-/** Formato dello storico dal backend (prima della conversione in Messaggio) */
 interface BackendHistoryEntry {
   role: string;
   content: string;
@@ -107,13 +84,7 @@ interface BackendHistoryResponse {
   history: BackendHistoryEntry[];
 }
 
-/**
- * Ottieni lo storico della conversazione per una sessione.
- * GET /api/history/{session_id}?personaggio_id={id}
- * @param sessionId - ID della sessione di conversazione
- * @param personaggioId - ID del personaggio (opzionale, filtra per personaggio)
- * @returns Array di messaggi dello storico in formato backend ({role, content})
- */
+/** GET /api/history/{session_id}?personaggio_id={id} */
 export const getHistory = async (
   sessionId: string,
   personaggioId?: string,
@@ -131,12 +102,7 @@ export const getHistory = async (
   }
 };
 
-/**
- * Cancella lo storico della conversazione per una sessione.
- * DELETE /api/history/{session_id}?personaggio_id={id}
- * @param sessionId - ID della sessione di conversazione
- * @param personaggioId - ID del personaggio (opzionale, cancella solo quello)
- */
+/** DELETE /api/history/{session_id}?personaggio_id={id} */
 export const clearHistory = async (
   sessionId: string,
   personaggioId?: string,

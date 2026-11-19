@@ -80,7 +80,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# CORS: permetti richieste dal frontend React (localhost:3000)
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -98,7 +98,6 @@ app.add_middleware(
 # Stato globale
 # ================================================================
 
-# Inizializzato al primo avvio
 chat_system: Optional[ChatStorica] = None
 personaggi: Dict = {}
 
@@ -174,8 +173,6 @@ async def get_personaggi():
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     """Invia un messaggio a un personaggio e ricevi la risposta."""
-    
-    # Validazione
     if request.personaggio_id not in personaggi:
         raise HTTPException(
             status_code=404,
@@ -185,16 +182,13 @@ async def chat(request: ChatRequest):
     if not request.messaggio.strip():
         raise HTTPException(status_code=400, detail="Messaggio vuoto")
     
-    # Session ID (per mantenere la storia)
     session_id = request.session_id or str(uuid.uuid4())
-    
-    # Recupera o crea storia per questa sessione
+
     if session_id not in conversation_history:
         conversation_history[session_id] = {p["id"]: [] for p in personaggi.values()}
     
     storia = conversation_history[session_id].get(request.personaggio_id, [])
-    
-    # Chiama il sistema di chat
+
     try:
         risultato = chat_system.rispondi(
             request.personaggio_id,
@@ -203,14 +197,12 @@ async def chat(request: ChatRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Errore nella chat: {str(e)}")
-    
-    # Aggiorna storia
+
     conversation_history[session_id][request.personaggio_id].extend([
         {"role": "user", "content": request.messaggio},
         {"role": "assistant", "content": risultato["testo"]}
     ])
-    
-    # Risposta
+
     return ChatResponse(
         risposta=risultato["testo"],
         personaggio=risultato["personaggio"],
@@ -242,7 +234,6 @@ async def get_history(session_id: str, personaggio_id: Optional[str] = None):
             "history": conversation_history[session_id].get(personaggio_id, [])
         }
     
-    # Tutta la storia della sessione
     return {
         "session_id": session_id,
         "history": conversation_history[session_id]
@@ -257,12 +248,10 @@ async def delete_history(session_id: str, personaggio_id: Optional[str] = None):
         raise HTTPException(status_code=404, detail="Session non trovata")
     
     if personaggio_id:
-        # Cancella solo per un personaggio
         if personaggio_id in conversation_history[session_id]:
             conversation_history[session_id][personaggio_id] = []
         return {"status": "ok", "message": f"Storia con {personaggio_id} cancellata"}
-    
-    # Cancella tutta la sessione
+
     del conversation_history[session_id]
     return {"status": "ok", "message": "Sessione cancellata"}
 
