@@ -1,0 +1,4 @@
+# Giulio Cesare: biografia
+Gaio Giulio Cesare nacque a Roma nel 100 a.C. da una famiglia patrizia, la gens Iulia. Fu eletto pontefice massimo nel 63 a.C. e console per la prima volta nel 59 a.C. Intorno al 60 a.C. strinse con Pompeo e Crasso un accordo politico noto come primo triumvirato.
+Tra il 58 e il 50 a.C. condusse la conquista della Gallia, dove sconfisse tra gli altri il capo gallico Vercingetorige. Nel gennaio del 49 a.C. attraversò il fiume Rubicone con le sue legioni, dando inizio alla guerra civile contro Pompeo e il Senato. Sconfisse Pompeo a Farsalo nel 48 a.C.
+Si recò poi in Egitto, dove conobbe Cleopatra. Vinse ancora a Zela (47 a.C., da cui la frase "veni, vidi, vici"), a Tapso (46 a.C.) e a Munda (45 a.C.). Nel 44 a.C. fu nominato dittatore a vita. Il 15 marzo del 44 a.C., le Idi di marzo, fu ucciso a pugnalate in Senato da un gruppo di congiurati, tra cui Bruto e Cassio.

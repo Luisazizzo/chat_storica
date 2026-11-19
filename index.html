@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>chat-storica-frontend</title>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Loader inline: visibile istantaneamente prima che React carichi -->
+      <div id="initial-loader" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#dddbd1;z-index:9999;">
+        <div style="text-align:center;position:relative;">
+          <div style="width:200px;height:200px;margin:0 auto 40px;position:relative;">
+            <div style="position:absolute;top:20px;left:20px;width:160px;height:120px;background:linear-gradient(135deg,#f4e4c1 0%,#e8d4a8 50%,#d4c4a0 100%);border-radius:4px;box-shadow:0 8px 16px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.5);border:2px solid #c9a961;"></div>
+          </div>
+          <div style="font-size:60px;position:absolute;top:50%;left:50%;transform:translate(-80px,-50px) rotate(-45deg);filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.4));animation:initialWrite 2s ease-in-out infinite;">🪶</div>
+          <p style="color:#4a3f35;margin:0;font-size:18px;font-family:Georgia,'Times New Roman',serif;letter-spacing:2px;">Caricamento dei contatti...</p>
+        </div>
+      </div>
+      <style>
+        @keyframes initialWrite {
+          0% { transform: translate(-80px,-50px) rotate(-45deg); }
+          45% { transform: translate(20px,-50px) rotate(-15deg); }
+          50% { transform: translate(20px,-50px) rotate(-15deg); }
+          55% { transform: translate(-80px,-30px) rotate(-45deg); }
+          100% { transform: translate(-80px,-50px) rotate(-45deg); }
+        }
+      </style>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

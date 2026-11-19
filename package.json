@@ -1,0 +1,31 @@
+{
+  "name": "chat-storica-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "docker": "cd ./chat_storica_BE && docker compose -f docker/docker-compose.yml up -d",
+    "docker:stop": "cd ./chat_storica_BE && docker compose -f docker/docker-compose.yml stop",
+    "backend": "cd ./chat_storica_BE && .venv\\Scripts\\python.exe -m uvicorn api_server:app --reload",
+    "start": "concurrently \"npm run backend\" \"npm run dev\" --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,green\"",
+    "start:all": "npm run docker && concurrently \"npm run backend\" \"npm run dev\" --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,green\""
+  },
+  "dependencies": {
+    "axios": "^1.20.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^4.3.0",
+    "concurrently": "^10.0.6",
+    "oxlint": "^1.81.0",
+    "typescript": "^7.0.2",
+    "vite": "^5.4.0"
+  }
+}

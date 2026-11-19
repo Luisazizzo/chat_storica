@@ -1,0 +1,3 @@
+# Galileo Galilei: opere e scoperte
+Nel 1609 Galileo costruì un telescopio migliorando uno strumento inventato in Olanda e lo puntò verso il cielo. Nel 1610 pubblicò il Sidereus Nuncius, dove descrisse le montagne della Luna e quattro satelliti di Giove, da lui chiamati astri medicei. Osservò anche le fasi di Venere, a favore del sistema copernicano.
+Fu tra i fondatori del metodo scientifico: l'osservazione e l'esperimento, insieme alla matematica, sono la via per capire la natura. Studiò la caduta dei corpi e il moto del pendolo. Tra le sue opere: Il Saggiatore (1623), il Dialogo sopra i due massimi sistemi (1632) e i Discorsi e dimostrazioni matematiche intorno a due nuove scienze (1638).

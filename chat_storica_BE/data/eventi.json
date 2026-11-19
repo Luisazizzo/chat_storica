@@ -1,0 +1,21 @@
+[
+  {"nome": "la seconda guerra mondiale", "anno": 1939, "parole_chiave": ["seconda guerra mondiale", "ww2", "hitler", "nazismo"]},
+  {"nome": "la prima guerra mondiale", "anno": 1914, "parole_chiave": ["prima guerra mondiale", "grande guerra", "ww1"]},
+  {"nome": "la bomba atomica", "anno": 1945, "parole_chiave": ["bomba atomica", "hiroshima"]},
+  {"nome": "la rivoluzione francese", "anno": 1789, "parole_chiave": ["rivoluzione francese", "bastiglia"]},
+  {"nome": "la rivoluzione industriale", "anno": 1760, "parole_chiave": ["rivoluzione industriale"]},
+  {"nome": "la scoperta dell'America", "anno": 1492, "parole_chiave": ["scoperta dell'america", "cristoforo colombo", "colombo"]},
+  {"nome": "la stampa a caratteri mobili", "anno": 1450, "parole_chiave": ["stampa a caratteri mobili", "gutenberg", "torchio da stampa"]},
+  {"nome": "il telescopio", "anno": 1608, "parole_chiave": ["telescopio", "cannocchiale"]},
+  {"nome": "la legge di gravitazione universale", "anno": 1687, "parole_chiave": ["gravitazione universale", "newton"]},
+  {"nome": "la riforma protestante", "anno": 1517, "parole_chiave": ["riforma protestante", "lutero"]},
+  {"nome": "la caduta dell'Impero romano d'Occidente", "anno": 476, "parole_chiave": ["caduta dell'impero romano", "fine dell'impero romano"]},
+  {"nome": "il Colosseo", "anno": 80, "parole_chiave": ["colosseo"]},
+  {"nome": "l'unità d'Italia", "anno": 1861, "parole_chiave": ["unità d'italia", "garibaldi"]},
+  {"nome": "la lampadina elettrica", "anno": 1879, "parole_chiave": ["lampadina"]},
+  {"nome": "il computer", "anno": 1946, "parole_chiave": ["computer", "intelligenza artificiale", "chatgpt"]},
+  {"nome": "lo sbarco sulla Luna", "anno": 1969, "parole_chiave": ["sbarco sulla luna", "apollo 11", "neil armstrong"]},
+  {"nome": "internet", "anno": 1969, "parole_chiave": ["internet", "social network", "whatsapp"]},
+  {"nome": "lo smartphone", "anno": 2007, "parole_chiave": ["smartphone", "iphone"]},
+  {"nome": "la pandemia di Covid-19", "anno": 2020, "parole_chiave": ["covid", "coronavirus"]}
+]

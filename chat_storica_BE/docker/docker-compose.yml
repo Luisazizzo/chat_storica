@@ -1,0 +1,81 @@
+# Progetto Finale - Chat con Personaggi Storici
+#
+# Stack locale: Qdrant (vector store) + backend FastAPI + frontend React (opzionali)
+#
+# Avvio base (solo Qdrant):       docker compose -f docker/docker-compose.yml up -d
+# Con backend:                    docker compose -f docker/docker-compose.yml --profile backend up -d
+# Con frontend:                   docker compose -f docker/docker-compose.yml --profile frontend up -d
+# Stack completo:                 docker compose -f docker/docker-compose.yml --profile full up -d
+#
+services:
+
+  # ---------------- Vector store: indicizzazione testi dei personaggi ----------------
+  # Equivalente al comando docker run visto a lezione (S09/S11):
+  #   docker run -d --name qdrant-chat-storica -p 6336:6333 \
+  #     -v "$(pwd)/qdrant_storage:/qdrant/storage" qdrant/qdrant
+  #
+  # Come nelle lezioni, Qdrant gira come servizio persistente: l'indice sopravvive
+  # al riavvio, quindi si indicizza UNA volta e poi si riusa.
+  qdrant:
+    image: qdrant/qdrant:v1.19.1
+    container_name: qdrant-chat-storica
+    ports:
+      # Porta HOST 6336 dedicata al progetto finale.
+      # Dashboard: http://localhost:6336/dashboard
+      - "6336:6333"
+    volumes:
+      # Bind mount: la cartella si ispeziona e si cancella se serve ripartire da zero.
+      - ../qdrant_storage:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c ':> /dev/tcp/127.0.0.1/6333' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks:
+      - chat-network
+
+  # ---------------- Backend FastAPI (opzionale, profilo "backend" o "full") ----------------
+  # API REST per il frontend React o altri client.
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    container_name: chat-storica-backend
+    profiles: ["backend", "full"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+    volumes:
+      - ../data:/app/data
+      - ../logs:/app/logs
+      - ../src:/app/src  # Hot reload durante sviluppo
+    networks:
+      - chat-network
+
+  # ---------------- Frontend React (opzionale, profilo "frontend" o "full") ----------------
+  # Interfaccia web per la chat.
+  # Prerequisito: npm run build nella cartella chat-storica-frontend
+  frontend:
+    build:
+      context: ../chat-storica-frontend
+      dockerfile: ../docker/Dockerfile.frontend
+    container_name: chat-storica-frontend
+    profiles: ["frontend", "full"]
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    networks:
+      - chat-network
+
+networks:
+  chat-network:
+    driver: bridge

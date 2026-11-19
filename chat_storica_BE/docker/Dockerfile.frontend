@@ -1,0 +1,24 @@
+# Dockerfile per frontend React (Vite)
+
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copia package files
+COPY package*.json ./
+
+# Installa dipendenze
+RUN npm install
+
+# Copia codice sorgente
+COPY . .
+
+# Esponi porta Vite dev server
+EXPOSE 3000
+
+# Avvia dev server (o build per produzione)
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+# Per produzione, usa invece:
+# RUN npm run build
+# CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]

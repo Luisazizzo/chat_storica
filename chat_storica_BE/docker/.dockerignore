@@ -1,0 +1,40 @@
+# File da escludere durante la build Docker
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist
+build
+.venv
+venv
+ENV
+env
+
+# Git
+.git
+.gitignore
+
+# Secrets
+.env
+
+# Dati locali
+qdrant_storage
+logs/*.jsonl
+
+# Documentazione (tranne README)
+*.md
+!README.md
+
+# IDE
+.vscode
+.idea
+
+# Node (se build frontend)
+node_modules
+.npm
